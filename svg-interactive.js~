@@ -111,6 +111,7 @@ var moveCircles = function (e) {
 			c++;
 			
 		};
+		var c = 0;
 	
 	rid = window.requestAnimationFrame(move);
 	
