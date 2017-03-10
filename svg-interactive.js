@@ -20,14 +20,14 @@ cb.addEventListener("click",clearSVG);
 //teleport
 var teleport = function(e) {
     if (this.getAttribute("fill")=="green"){
-	this.remove();
-	var a = createCircle(e);
-	a.setAttribute("cx", Math.random()*width);	
-	a.setAttribute("cy", Math.random()*height);
-	a.setAttribute("dx",1);
-	a.setAttribute("dy",1);
-	svg.appendChild(a);
-	e.stopPropagation();
+		this.remove();
+		var a = createCircle(e);
+		a.setAttribute("cx", Math.random()*(width-20)+20);	
+		a.setAttribute("cy", Math.random()*(height-20)+20);
+		a.setAttribute("dx",1);
+		a.setAttribute("dy",1);
+		svg.appendChild(a);
+		e.stopPropagation();
     };
 };
 
@@ -93,29 +93,52 @@ var moveCircles = function (e) {
     
     var move = function(){
 
-	var balls = document.getElementsByTagName('circle');
-	for (var i =0; i < balls.length; i++){
-	    var ball = balls[i];
-	    var x = parseInt(ball.getAttribute("cx"));
-	    var y = parseInt(ball.getAttribute("cy"));
-	    var dx = parseInt(ball.getAttribute("dx"));
-	    var dy = parseInt(ball.getAttribute("dy"));
-	    if (x < 0 || x > width){
-		dx = -1 * dx;
-	    };
-	    if (y < 0 || y > width){
-		dy = -1 * dy;
-	    }
-	    ball.setAttribute("cx",x+dx);
-	    ball.setAttribute("cy",y+dy);
-	    ball.setAttribute("dx",dx);
-	    ball.setAttribute("dy",dy);
-	};
-	rid = window.requestAnimationFrame(move);
+			var balls = document.getElementsByTagName('circle');
+			for (var i =0; i < balls.length; i++){
+					var ball = balls[i];
+					var x = parseInt(ball.getAttribute("cx"));
+					var y = parseInt(ball.getAttribute("cy"));
+					var dx = parseInt(ball.getAttribute("dx"));
+					var dy = parseInt(ball.getAttribute("dy"));
+					var r = parseInt(ball.getAttribute("r"));
+					var fill = ball.getAttribute("fill");
+					if (x < 0 + ball.getAttribute("r") || x > width - ball.getAttribute("r")){
+						dx = -1 * dx;
+					};
+					if (y < 0 + ball.getAttribute("r") || y > width - ball.getAttribute("r")){
+						dy = -1 * dy;
+					}
+					ball.setAttribute("cx",x+dx);
+					ball.setAttribute("cy",y+dy);
+					ball.setAttribute("dx",dx);
+					ball.setAttribute("dy",dy);
+					if (ball.getAttribute("cx") == width/2) {
+						var ball1 = balls[i];
+						var ball2 = createCircleG(x,y,"goldenrod",dx,dy);
+						
+						console.log(ball1, ball2);
+						ball2.setAttribute("dx", dx*-1);
+						ball2.setAttribute("dy", dy*-1);
+						ball1.setAttribute("r", r/2);
+						ball2.setAttribute("r", r/2);
+						svg.appendChild(ball2);
+						console.log("MITOSIS");
+						//ball.mitosis();
+					};
+					if (r < 2){
+						ball.remove();
+					};
+			};
+			rid = window.requestAnimationFrame(move);
     };
+    
     move();
 };
 	    
-		
+var mitosis = function () {
+
+};
+
+
 
 moveb.addEventListener("click", moveCircles);
